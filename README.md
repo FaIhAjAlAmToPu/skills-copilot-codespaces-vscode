@@ -82,6 +82,86 @@ Before you open up a codespace on a repository, you can create a development con
 
 **Wait about 60 seconds then refresh your repository landing page for the next step.**
 
+## Step 2: Setting up the Development Environment
+
+To run the Golang webserver with gRPC, you need to set up your development environment. Follow the steps below to get started:
+
+1. Install Golang: Download and install Golang from the official website: [https://golang.org/dl/](https://golang.org/dl/)
+2. Install Protocol Buffers: Download and install Protocol Buffers from the official website: [https://developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers)
+3. Install gRPC: Follow the instructions to install gRPC for Golang: [https://grpc.io/docs/languages/go/quickstart/](https://grpc.io/docs/languages/go/quickstart/)
+4. Clone the repository: Clone this repository to your local machine using the following command:
+   ```
+   git clone https://github.com/FaIhAjAlAmToPu/skills-copilot-codespaces-vscode.git
+   ```
+5. Navigate to the project directory:
+   ```
+   cd skills-copilot-codespaces-vscode
+   ```
+6. Generate gRPC code: Run the following command to generate the gRPC code from the protobuf file:
+   ```
+   protoc --go_out=. --go-grpc_out=. proto/service.proto
+   ```
+7. Build the project: Run the following command to build the project:
+   ```
+   go build
+   ```
+8. Run the server: Start the Golang webserver with gRPC by running the following command:
+   ```
+   ./skills-copilot-codespaces-vscode
+   ```
+
+## Step 3: Using the gRPC Service
+
+Once the server is running, you can use the gRPC service to interact with the webserver. Below are some examples of how to use the gRPC service:
+
+### Example 1: Using the gRPC Client
+
+You can create a gRPC client to interact with the server. Here is an example of how to create a gRPC client in Golang:
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"google.golang.org/grpc"
+	pb "path/to/your/protobuf/package"
+)
+
+const (
+	address = "localhost:50051"
+)
+
+func main() {
+	// Set up a connection to the server.
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c := pb.NewYourServiceClient(conn)
+
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	r, err := c.YourMethod(ctx, &pb.YourRequest{Name: "World"})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+	log.Printf("Greeting: %s", r.GetMessage())
+}
+```
+
+### Example 2: Using gRPCurl
+
+You can also use gRPCurl, a command-line tool for interacting with gRPC servers. Here is an example of how to use gRPCurl to call the `YourMethod` service:
+
+```sh
+grpcurl -plaintext -d '{"name": "World"}' localhost:50051 service.YourService/YourMethod
+```
+
 <footer>
 
 <!--
