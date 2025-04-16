@@ -1,0 +1,15 @@
+{
+    "name": "Golang Webserver with gRPC",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "golang.go",
+        "GitHub.copilot"
+    ],
+    "postCreateCommand": "go mod tidy"
+}
